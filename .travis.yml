@@ -1,0 +1,10 @@
+dist: bionic
+language: java
+jdk:
+    - openjdk11
+install: 
+    - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+script: 
+    - mvn test -B
+after_success:
+    - mvn clean test jacoco:report coveralls:report -DrepoToken=${COVERALLS_TOKEN}
