@@ -3,6 +3,7 @@ package br.ufmg.engsoft.reprova.mime.json;
 import java.lang.reflect.Type;
 
 import br.ufmg.engsoft.reprova.model.Course;
+import br.ufmg.engsoft.reprova.model.Student;
 import com.google.gson.*;
 
 import br.ufmg.engsoft.reprova.model.Question;
@@ -15,7 +16,7 @@ public class Json {
   /**
    * Deserializer for Semester.
    */
-  protected static class SemesterDeserializer implements JsonDeserializer<Course> {
+  protected static class CourserDeserializer implements JsonDeserializer<Course> {
     /**
      * The semester format is:
      * "year/ref"
@@ -33,6 +34,21 @@ public class Json {
     }
   }
 
+  /**
+   * Deserializer for Student.
+   */
+  protected static class StudentDeserializer implements JsonDeserializer<Student> {
+    @Override
+    public Student deserialize(
+            JsonElement json,
+            Type typeOfT,
+            JsonDeserializationContext context
+    ) {
+      GsonBuilder parserBuilder = new GsonBuilder();
+
+      return parserBuilder.create().fromJson(json.getAsJsonObject(), Student.class);
+    }
+  }
 
   /**
    * Deserializer for Question.Builder.
@@ -50,7 +66,7 @@ public class Json {
 
       parserBuilder.registerTypeAdapter( // Question has a Course field.
         Course.class,
-        new SemesterDeserializer()
+        new CourserDeserializer()
       );
 
       Question.Builder questionBuilder = parserBuilder

@@ -1,5 +1,6 @@
 package br.ufmg.engsoft.reprova.model;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.HashMap;
@@ -62,16 +63,20 @@ public class Course {
    * TODO: SONIA CUIDE DISSO!
    */
   public final float score;
-
+  /**
+   * TODO: SONIA CUIDE DISSO!
+   */
+  public final List<Student> students;
 
 
   /**
    * Construct a Semester.
    * @param year  the year
    * @param ref   the reference
+   * @param students
    * @throws IllegalArgumentException  if any parameter is null
    */
-  public Course(int year, Reference ref, String courseName, float score) {
+  public Course(int year, Reference ref, String courseName, float score, List<Student> students) {
     if (ref == null)
       throw new IllegalArgumentException("ref mustn't be null");
 
@@ -79,6 +84,7 @@ public class Course {
     this.ref = ref;
     this.courseName = courseName;
     this.score = score;
+    this.students = students;
   }
 
 
