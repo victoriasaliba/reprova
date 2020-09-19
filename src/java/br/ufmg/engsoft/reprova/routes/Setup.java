@@ -55,7 +55,7 @@ public class Setup {
     Spark.staticFiles.location("/public");
 
     logger.info("Setting up questions route:");
-    var questions = new Questions(json, questionsDAO);
+    Questions questions = new Questions(json, questionsDAO);
     questions.setup();
   }
 }
