@@ -8,11 +8,11 @@ import br.ufmg.engsoft.reprova.mime.json.Json;
 
 public class Reprova {
   public static void main(String[] args) {
-    var json = new Json();
+    Json json = new Json();
 
-    var db = new Mongo("reprova");
+    Mongo db = new Mongo("reprova");
 
-    var questionsDAO = new QuestionsDAO(db, json);
+    QuestionsDAO questionsDAO = new QuestionsDAO(db, json);
 
 
     Setup.routes(json, questionsDAO);
