@@ -74,12 +74,12 @@ public class QuestionsDAO {
     if (document == null)
       throw new IllegalArgumentException("document mustn't be null");
 
-    var doc = document.toJson();
+    String doc = document.toJson();
 
     logger.info("Fetched question: " + doc);
 
     try {
-      var question = json
+      Question question = json
         .parse(doc, Question.Builder.class)
         .build();
 
