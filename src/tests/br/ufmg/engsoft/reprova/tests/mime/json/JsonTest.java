@@ -3,6 +3,7 @@ package br.ufmg.engsoft.reprova.tests.mime.json;
 import br.ufmg.engsoft.reprova.mime.json.Json;
 import br.ufmg.engsoft.reprova.model.Course;
 import br.ufmg.engsoft.reprova.model.Question;
+import br.ufmg.engsoft.reprova.model.Student;
 import org.junit.jupiter.api.Test;
 
 import java.util.AbstractMap;
@@ -29,40 +30,45 @@ public class JsonTest {
         return Collectors.toConcurrentMap((e) -> e.getKey(), (e) -> e.getValue());
     }
 
-  /**
-   * Rendering then parsing should produce an equivalent Question object.
-   */
-  @Test
-  void testQuestionSerialization() {
-    Course c1 =  new Course(2019, Course.Reference._1,"Software Reuse",50.0f);
-    Course c2 =  new Course(2019, Course.Reference._1,"Design and Analysis of Algorithms",49.5f);
-    Course c3 =  new Course(2020, Course.Reference._2,"Database",51.2f);
-    Question question = new Question.Builder()
-      .id("id")
-      .theme("theme")
-      .description("description")
-      .statement("statement")
-      .courses(Arrays.asList(c1,c2,c3))
-      .isPrivate(false)
-      .build();
+    /**
+     * Rendering then parsing should produce an equivalent Question object.
+     */
+    @Test
+    void testQuestionSerialization() {
+        Student s1 = new Student("id1", 50.0f);
+        Student s2 = new Student("id2", 49.0f);
 
-    Json formatter = new Json();
+        Course c1 = new Course(2019, Course.Reference._1, "Software Reuse", 50.0f, Arrays.asList(s1, s2));
+        Course c2 = new Course(2019, Course.Reference._1, "Design and Analysis of Algorithms", 49.5f, Arrays.asList(s1, s2));
+        Course c3 = new Course(2020, Course.Reference._2, "Database", 51.2f, Arrays.asList(s1));
+        Question question = new Question.Builder()
+                .id("id")
+                .theme("theme")
+                .description("description")
+                .statement("statement")
+                .courses(Arrays.asList(c1, c2, c3))
+                .isPrivate(false)
+                .build();
 
-    String json = formatter.render(question);
+        Json formatter = new Json();
 
-    Question questionCopy = formatter
-      .parse(json, Question.Builder.class)
-      .build();
+        String json = formatter.render(question);
 
-    assertEquals(question,questionCopy);
-  }
+        Question questionCopy = formatter
+                .parse(json, Question.Builder.class)
+                .build();
+
+        assertEquals(question, questionCopy);
+    }
 
     /**
      * Rendering then parsing should produce an equivalent Course object.
      */
     @Test
     void testCourseSerialization() {
-        Course course =  new Course(2019, Course.Reference._1,"Software Reuse",50.0f);
+        Student s1 = new Student("id1", 50.0f);
+        Student s2 = new Student("id2", 49.0f);
+        Course course = new Course(2019, Course.Reference._1, "Software Reuse", 50.0f, Arrays.asList(s1, s2));
 
         Json formatter = new Json();
 
@@ -71,6 +77,23 @@ public class JsonTest {
         Course courseCopy = formatter
                 .parse(json, Course.class);
 
-        assertEquals(course,courseCopy);
+        assertEquals(course, courseCopy);
+    }
+
+    /**
+     * Rendering then parsing should produce an equivalent Student object.
+     */
+    @Test
+    void testStudentSerialization() {
+        Student student = new Student("id", 50.0f);
+
+        Json formatter = new Json();
+
+        String json = formatter.render(student);
+
+        Student studentCopy = formatter
+                .parse(json, Student.class);
+
+        assertEquals(student, studentCopy);
     }
 }
