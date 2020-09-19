@@ -98,10 +98,10 @@ public class Question {
 
 
       if (this.record == null)
-        this.record = new HashMap<Semester, Map<String, Float>>();
+        this.record = new HashMap<>();
       else
         // All inner maps mustn't be null:
-        for (var entry : this.record.entrySet())
+        for (Map.Entry<Semester, Map<String, Float>> entry : this.record.entrySet())
           if (entry.getValue() == null)
             throw new IllegalArgumentException("inner record mustn't be null");
 
@@ -150,7 +150,7 @@ public class Question {
     if (!(obj instanceof Question))
       return false;
 
-    var question = (Question) obj;
+    Question question = (Question) obj;
 
     return this.id.equals(question.id)
         && this.theme.equals(question.theme)
@@ -179,7 +179,7 @@ public class Question {
    */
   @Override
   public String toString() {
-    var builder = new StringBuilder();
+    StringBuilder builder = new StringBuilder();
 
     builder.append("Question:\n");
     builder.append("  id: " + this.id + "\n");

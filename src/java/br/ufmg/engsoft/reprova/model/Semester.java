@@ -27,8 +27,8 @@ public class Semester {
      * The mapping of integers to Semester.Reference.
      */
     protected static final Map<Integer, Reference> valueMap =
-      new HashMap<Integer, Reference>(); static {
-      for (var ref : Reference.values())
+      new HashMap<>(); static {
+      for (Reference ref : Reference.values())
         valueMap.put(ref.value, ref);
     }
 
@@ -81,7 +81,7 @@ public class Semester {
     if (!(obj instanceof Semester))
       return false;
 
-    var semester = (Semester) obj;
+    Semester semester = (Semester) obj;
 
     return this.year == semester.year
         && this.ref == semester.ref;
