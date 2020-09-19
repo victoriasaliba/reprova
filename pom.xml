@@ -98,6 +98,7 @@
           <complianceLevel>1.8</complianceLevel>
           <source>1.8</source>
           <target>1.8</target>
+          <verbose>true</verbose>
         </configuration>
         <executions>
           <execution>
