@@ -1,19 +1,18 @@
 package br.ufmg.engsoft.reprova.database;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Projections.exclude;
 import static com.mongodb.client.model.Projections.fields;
 
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import org.slf4j.Logger;
@@ -104,7 +103,7 @@ public class QuestionsDAO {
     if (id == null)
       throw new IllegalArgumentException("id mustn't be null");
 
-    var question = this.collection
+    Question question = this.collection
       .find(eq(new ObjectId(id)))
       .map(this::parseDoc)
       .first();
@@ -118,7 +117,7 @@ public class QuestionsDAO {
 
   /**
    * List all the questions that match the given non-null parameters.
-   * The question's statement is ommited.
+   * The question's statement is commited.
    * @param theme      the expected theme, or null
    * @param pvt        the expected privacy, or null
    * @return The questions in the collection that match the given parameters, possibly
@@ -126,7 +125,7 @@ public class QuestionsDAO {
    * @throws IllegalArgumentException  if there is an invalid Question
    */
   public Collection<Question> list(String theme, Boolean pvt) {
-    var filters =
+    List<Bson> filters =
       Arrays.asList(
         theme == null ? null : eq("theme", theme),
         pvt == null ? null : eq("pvt", pvt)
@@ -135,11 +134,11 @@ public class QuestionsDAO {
       .filter(Objects::nonNull) // mongo won't allow null filters.
       .collect(Collectors.toList());
 
-    var doc = filters.isEmpty() // mongo won't take null as a filter.
+    FindIterable<Document> doc = filters.isEmpty() // mongo won't take null as a filter.
       ? this.collection.find()
       : this.collection.find(and(filters));
 
-    var result = new ArrayList<Question>();
+    ArrayList<Question> result = new ArrayList<Question>();
 
     doc.projection(fields(exclude("statement")))
       .map(this::parseDoc)
@@ -177,9 +176,9 @@ public class QuestionsDAO {
       .append("record", new Document(record))
       .append("pvt", question.pvt);
 
-    var id = question.id;
+    String id = question.id;
     if (id != null) {
-      var result = this.collection.replaceOne(
+      UpdateResult result = this.collection.replaceOne(
         eq(new ObjectId(id)),
         doc
       );
@@ -208,7 +207,7 @@ public class QuestionsDAO {
     if (id == null)
       throw new IllegalArgumentException("id mustn't be null");
 
-    var result = this.collection.deleteOne(
+    boolean result = this.collection.deleteOne(
       eq(new ObjectId(id))
     ).wasAcknowledged();
 
