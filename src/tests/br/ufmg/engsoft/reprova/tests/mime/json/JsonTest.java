@@ -1,20 +1,18 @@
 package br.ufmg.engsoft.reprova.tests.mime.json;
 
+import br.ufmg.engsoft.reprova.mime.json.Json;
+import br.ufmg.engsoft.reprova.model.Course;
+import br.ufmg.engsoft.reprova.model.Question;
+import org.junit.jupiter.api.Test;
+
 import java.util.AbstractMap;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import br.ufmg.engsoft.reprova.mime.json.Json;
-import br.ufmg.engsoft.reprova.model.Question;
-import br.ufmg.engsoft.reprova.model.Semester;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class JsonTest {
@@ -32,32 +30,20 @@ public class JsonTest {
     }
 
   /**
-   * Rendering then parsing should produce an equivalent object.
+   * Rendering then parsing should produce an equivalent Question object.
    */
   @Test
-  void question() {
+  void testQuestionSerialization() {
+    Course c1 =  new Course(2019, Course.Reference._1,"Software Reuse",50.0f);
+    Course c2 =  new Course(2019, Course.Reference._1,"Design and Analysis of Algorithms",49.5f);
+    Course c3 =  new Course(2020, Course.Reference._2,"Database",51.2f);
     Question question = new Question.Builder()
       .id("id")
       .theme("theme")
       .description("description")
       .statement("statement")
-      .record(
-              (Map<Semester, Map<String, Float>>)Stream.of(
-                      entry(
-                              new Semester(2019, Semester.Reference._1),
-                              (Map<String, Float>)Stream.of(
-                                      entry("tw", 50.0f),
-                                      entry("tz", 49.5f),
-                                      entry("tx", 51.2f)
-                              ).collect(entriesToMap())
-                      ),
-                      entry(
-                              new Semester(2020, Semester.Reference._2),
-                              Collections.emptyMap()
-                      )
-              ).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()))
-      )
-      .pvt(false)
+      .courses(Arrays.asList(c1,c2,c3))
+      .isPrivate(false)
       .build();
 
     Json formatter = new Json();
@@ -68,8 +54,23 @@ public class JsonTest {
       .parse(json, Question.Builder.class)
       .build();
 
-    assertTrue(
-      question.equals(questionCopy)
-    );
+    assertEquals(question,questionCopy);
   }
+
+    /**
+     * Rendering then parsing should produce an equivalent Course object.
+     */
+    @Test
+    void testCourseSerialization() {
+        Course course =  new Course(2019, Course.Reference._1,"Software Reuse",50.0f);
+
+        Json formatter = new Json();
+
+        String json = formatter.render(course);
+
+        Course courseCopy = formatter
+                .parse(json, Course.class);
+
+        assertEquals(course,courseCopy);
+    }
 }

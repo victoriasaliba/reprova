@@ -9,7 +9,7 @@ import java.util.HashMap;
  * A semester class.
  * The semester is composed of an year and a reference (1 or 2).
  */
-public class Semester {
+public class Course {
   /**
    * The reference part of a semester.
    * Either 1 or 2.
@@ -54,6 +54,14 @@ public class Semester {
    * The reference of the semester.
    */
   public final Reference ref;
+  /**
+   * TODO: SONIA CUIDE DISSO!
+   */
+  public final String courseName;
+  /**
+   * TODO: SONIA CUIDE DISSO!
+   */
+  public final float score;
 
 
 
@@ -63,12 +71,14 @@ public class Semester {
    * @param ref   the reference
    * @throws IllegalArgumentException  if any parameter is null
    */
-  public Semester(int year, Reference ref) {
+  public Course(int year, Reference ref, String courseName, float score) {
     if (ref == null)
       throw new IllegalArgumentException("ref mustn't be null");
 
     this.year = year;
     this.ref = ref;
+    this.courseName = courseName;
+    this.score = score;
   }
 
 
@@ -78,13 +88,13 @@ public class Semester {
     if (obj == this)
       return true;
 
-    if (!(obj instanceof Semester))
+    if (!(obj instanceof Course))
       return false;
 
-    Semester semester = (Semester) obj;
+    Course course = (Course) obj;
 
-    return this.year == semester.year
-        && this.ref == semester.ref;
+    return this.year == course.year
+        && this.ref == course.ref;
   }
 
   @Override

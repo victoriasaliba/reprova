@@ -126,7 +126,7 @@ public class Questions {
       return invalid;
     }
 
-    if (question.pvt && !auth) {
+    if (question.isPrivate && !auth) {
       logger.info("Unauthorised token: " + token);
       response.status(403);
       return unauthorised;

@@ -3,6 +3,7 @@ package br.ufmg.engsoft.reprova.database;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import br.ufmg.engsoft.reprova.model.Course;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import static com.mongodb.client.model.Filters.and;
@@ -159,22 +160,14 @@ public class QuestionsDAO {
     if (question == null)
       throw new IllegalArgumentException("question mustn't be null");
 
-    Map<String, Object> record = question.record // Convert the keys to string,
-      .entrySet()                                // and values to object.
-      .stream()
-      .collect(
-        Collectors.toMap(
-          e -> e.getKey().toString(),
-          Map.Entry::getValue
-        )
-      );
+    List<Course> courses = question.courses;
 
     Document doc = new Document()
       .append("theme", question.theme)
       .append("description", question.description)
       .append("statement", question.statement)
-      .append("record", new Document(record))
-      .append("pvt", question.pvt);
+      .append("courses", courses)
+      .append("pvt", question.isPrivate);
 
     String id = question.id;
     if (id != null) {

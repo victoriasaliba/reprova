@@ -2,10 +2,10 @@ package br.ufmg.engsoft.reprova.mime.json;
 
 import java.lang.reflect.Type;
 
+import br.ufmg.engsoft.reprova.model.Course;
 import com.google.gson.*;
 
 import br.ufmg.engsoft.reprova.model.Question;
-import br.ufmg.engsoft.reprova.model.Semester;
 
 
 /**
@@ -15,28 +15,21 @@ public class Json {
   /**
    * Deserializer for Semester.
    */
-  protected static class SemesterDeserializer implements JsonDeserializer<Semester> {
+  protected static class SemesterDeserializer implements JsonDeserializer<Course> {
     /**
      * The semester format is:
      * "year/ref"
      * Where ref is 1 or 2.
      */
     @Override
-    public Semester deserialize(
+    public Course deserialize(
       JsonElement json,
       Type typeOfT,
       JsonDeserializationContext context
     ) {
-      String[] values = json.getAsString().split("/");
+      GsonBuilder parserBuilder = new GsonBuilder();
 
-      if (values.length != 2)
-        throw new JsonParseException("invalid semester");
-
-      Integer year = Integer.parseInt(values[0]);
-
-      Semester.Reference ref = Semester.Reference.fromInt(Integer.parseInt(values[1]));
-
-      return new Semester(year, ref);
+      return parserBuilder.create().fromJson(json.getAsJsonObject(), Course.class);
     }
   }
 
@@ -55,8 +48,8 @@ public class Json {
     ) {
       GsonBuilder parserBuilder = new GsonBuilder();
 
-      parserBuilder.registerTypeAdapter( // Question has a Semester field.
-        Semester.class,
+      parserBuilder.registerTypeAdapter( // Question has a Course field.
+        Course.class,
         new SemesterDeserializer()
       );
 
@@ -70,13 +63,13 @@ public class Json {
       // Mongo's id property doesn't match Question.id:
       JsonElement _id = json.getAsJsonObject().get("_id");
 
-      if (_id != null)
+      if (_id != null){
         questionBuilder.id(
           _id.getAsJsonObject()
             .get("$oid")
             .getAsString()
         );
-
+      }
       return questionBuilder;
     }
   }
