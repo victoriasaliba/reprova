@@ -98,7 +98,6 @@
           <complianceLevel>1.8</complianceLevel>
           <source>1.8</source>
           <target>1.8</target>
-          <verbose>true</verbose>
         </configuration>
         <executions>
           <execution>
@@ -140,25 +139,37 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.0</version>
         <configuration>
-          <release>8</release>
           <compilerArgument>-Xlint:unchecked</compilerArgument>
         </configuration>
       </plugin>
 
       <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
+        <!-- Build an executable JAR -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.0</version>
         <configuration>
           <archive>
             <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>lib/</classpathPrefix>
               <mainClass>br.ufmg.engsoft.reprova.Reprova</mainClass>
             </manifest>
           </archive>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-          <finalName>reprova</finalName>
-          <appendAssemblyId>false</appendAssemblyId>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
