@@ -11,6 +11,8 @@ import br.ufmg.engsoft.reprova.database.QuestionsDAO;
 import br.ufmg.engsoft.reprova.model.Question;
 import br.ufmg.engsoft.reprova.mime.json.Json;
 
+import java.util.Collection;
+
 
 /**
  * Questions route.
@@ -96,8 +98,8 @@ public class Questions {
   protected Object get(Request request, Response response) {
     logger.info("Received questions get:");
 
-    var id = request.queryParams("id");
-    var auth = authorised(request.queryParams("token"));
+    String id = request.queryParams("id");
+    boolean auth = authorised(request.queryParams("token"));
 
     return id == null
       ? this.get(request, response, auth)
@@ -116,7 +118,7 @@ public class Questions {
 
     logger.info("Fetching question " + id);
 
-    var question = questionsDAO.get(id);
+    Question question = questionsDAO.get(id);
 
     if (question == null) {
       logger.error("Invalid request!");
@@ -146,7 +148,7 @@ public class Questions {
 
     logger.info("Fetching questions.");
 
-    var questions = questionsDAO.list(
+    Collection<Question> questions = questionsDAO.list(
       null, // theme filtering is not implemented in this endpoint.
       auth ? null : false
     );
@@ -173,7 +175,7 @@ public class Questions {
 
     response.type("application/json");
 
-    var token = request.queryParams("token");
+    String token = request.queryParams("token");
 
     if (!authorised(token)) {
       logger.info("Unauthorised token: " + token);
@@ -197,7 +199,7 @@ public class Questions {
 
     logger.info("Adding question.");
 
-    var success = questionsDAO.add(question);
+    boolean success = questionsDAO.add(question);
 
     response.status(
        success ? 200
@@ -220,8 +222,8 @@ public class Questions {
 
     response.type("application/json");
 
-    var id = request.queryParams("id");
-    var token = request.queryParams("token");
+    String id = request.queryParams("id");
+    String token = request.queryParams("token");
 
     if (!authorised(token)) {
       logger.info("Unauthorised token: " + token);
@@ -237,7 +239,7 @@ public class Questions {
 
     logger.info("Deleting question " + id);
 
-    var success = questionsDAO.remove(id);
+    boolean success = questionsDAO.remove(id);
 
     logger.info("Done. Responding...");
 
