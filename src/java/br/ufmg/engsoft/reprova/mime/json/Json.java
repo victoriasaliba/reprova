@@ -2,12 +2,7 @@ package br.ufmg.engsoft.reprova.mime.json;
 
 import java.lang.reflect.Type;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
 
 import br.ufmg.engsoft.reprova.model.Question;
 import br.ufmg.engsoft.reprova.model.Semester;
@@ -37,9 +32,9 @@ public class Json {
       if (values.length != 2)
         throw new JsonParseException("invalid semester");
 
-      var year = Integer.parseInt(values[0]);
+      Integer year = Integer.parseInt(values[0]);
 
-      var ref = Semester.Reference.fromInt(Integer.parseInt(values[1]));
+      Semester.Reference ref = Semester.Reference.fromInt(Integer.parseInt(values[1]));
 
       return new Semester(year, ref);
     }
@@ -58,14 +53,14 @@ public class Json {
       Type typeOfT,
       JsonDeserializationContext context
     ) {
-      var parserBuilder = new GsonBuilder();
+      GsonBuilder parserBuilder = new GsonBuilder();
 
       parserBuilder.registerTypeAdapter( // Question has a Semester field.
         Semester.class,
         new SemesterDeserializer()
       );
 
-      var questionBuilder = parserBuilder
+      Question.Builder questionBuilder = parserBuilder
         .create()
         .fromJson(
           json.getAsJsonObject(),
@@ -73,7 +68,7 @@ public class Json {
         );
 
       // Mongo's id property doesn't match Question.id:
-      var _id = json.getAsJsonObject().get("_id");
+      JsonElement _id = json.getAsJsonObject().get("_id");
 
       if (_id != null)
         questionBuilder.id(
@@ -100,7 +95,7 @@ public class Json {
    * Currently, it supports only the Question type.
    */
   public Json() {
-    var parserBuilder = new GsonBuilder();
+    GsonBuilder parserBuilder = new GsonBuilder();
 
     parserBuilder.registerTypeAdapter(
       Question.Builder.class,
