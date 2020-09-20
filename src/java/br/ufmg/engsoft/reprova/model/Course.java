@@ -10,7 +10,7 @@ import java.util.HashMap;
  * A semester class.
  * The semester is composed of an year and a reference (1 or 2).
  */
-public class Course {
+public abstract class Course {
   /**
    * The reference part of a semester.
    * Either 1 or 2.
@@ -59,34 +59,24 @@ public class Course {
    * TODO: SONIA CUIDE DISSO!
    */
   public final String courseName;
-  /**
-   * TODO: SONIA CUIDE DISSO!
-   */
-  public final float score;
-  /**
-   * TODO: SONIA CUIDE DISSO!
-   */
-  public final List<Student> students;
 
 
   /**
    * Construct a Semester.
    * @param year  the year
    * @param ref   the reference
-   * @param students
    * @throws IllegalArgumentException  if any parameter is null
    */
-  public Course(int year, Reference ref, String courseName, float score, List<Student> students) {
+  public Course(int year, Reference ref, String courseName) {
     if (ref == null)
       throw new IllegalArgumentException("ref mustn't be null");
 
     this.year = year;
     this.ref = ref;
     this.courseName = courseName;
-    this.score = score;
-    this.students = students;
   }
 
+  public abstract float getScore();
 
 
   @Override

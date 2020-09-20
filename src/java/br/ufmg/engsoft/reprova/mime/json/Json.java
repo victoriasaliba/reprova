@@ -2,6 +2,7 @@ package br.ufmg.engsoft.reprova.mime.json;
 
 import java.lang.reflect.Type;
 
+import br.ufmg.engsoft.reprova.model.CoarseGrainedCourse;
 import br.ufmg.engsoft.reprova.model.Course;
 import br.ufmg.engsoft.reprova.model.Student;
 import com.google.gson.*;
@@ -30,7 +31,7 @@ public class Json {
     ) {
       GsonBuilder parserBuilder = new GsonBuilder();
 
-      return parserBuilder.create().fromJson(json.getAsJsonObject(), Course.class);
+      return parserBuilder.create().fromJson(json.getAsJsonObject(), CoarseGrainedCourse.class); // TODO: apply variance
     }
   }
 
