@@ -69,7 +69,7 @@ public class JsonTest {
         Configuration.setFineGrained();
         Student s1 = new Student("id1", 50.0f);
         Student s2 = new Student("id2", 49.0f);
-        CourseFactory factory = new FineGrainedCourseFactory(); //TODO: change to CourseFactory.create();
+        CourseFactory factory = CourseFactory.create();
         Course c1 = factory.createCourse(2019, Course.Reference._1, "Software Reuse", Arrays.asList(s1, s2));
         Course c2 = factory.createCourse(2019, Course.Reference._1, "Design and Analysis of Algorithms", Arrays.asList(s1, s2));
         Course c3 = factory.createCourse(2020, Course.Reference._2, "Database", Arrays.asList(s1));
@@ -120,7 +120,7 @@ public class JsonTest {
         Configuration.setFineGrained();
         Student s1 = new Student("id1", 50.0f);
         Student s2 = new Student("id2", 49.0f);
-        CourseFactory factory = new FineGrainedCourseFactory(); //TODO: change to CourseFactory.create();
+        CourseFactory factory = CourseFactory.create();
         Course course = factory.createCourse(2019, Course.Reference._1, "Software Reuse", Arrays.asList(s1, s2));
 
         Json formatter = new Json();
