@@ -2,12 +2,8 @@ package br.ufmg.engsoft.reprova.mime.json;
 
 import java.lang.reflect.Type;
 
-import br.ufmg.engsoft.reprova.model.CoarseGrainedCourse;
-import br.ufmg.engsoft.reprova.model.Course;
-import br.ufmg.engsoft.reprova.model.Student;
+import br.ufmg.engsoft.reprova.model.*;
 import com.google.gson.*;
-
-import br.ufmg.engsoft.reprova.model.Question;
 
 
 /**
@@ -31,7 +27,11 @@ public class Json {
     ) {
       GsonBuilder parserBuilder = new GsonBuilder();
 
-      return parserBuilder.create().fromJson(json.getAsJsonObject(), CoarseGrainedCourse.class); // TODO: apply variance
+      return deserializeTo(json, parserBuilder); // TODO: apply variance
+    }
+
+    private Course deserializeTo(JsonElement json, GsonBuilder parserBuilder) {
+      return parserBuilder.create().fromJson(json.getAsJsonObject(), CoarseGrainedCourse.class);
     }
   }
 

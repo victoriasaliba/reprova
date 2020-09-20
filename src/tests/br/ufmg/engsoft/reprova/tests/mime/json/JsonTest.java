@@ -1,5 +1,6 @@
 package br.ufmg.engsoft.reprova.tests.mime.json;
 
+import br.ufmg.engsoft.reprova.Configuration;
 import br.ufmg.engsoft.reprova.mime.json.Json;
 import br.ufmg.engsoft.reprova.model.*;
 import br.ufmg.engsoft.reprova.model.variability.CoarseGrainedCourseFactory;
@@ -35,7 +36,8 @@ public class JsonTest {
      */
     @Test
     void testQuestionSerialization_CoarseGrained() {
-        CourseFactory factory = new CoarseGrainedCourseFactory();
+        Configuration.setCoarseGrained();
+        CourseFactory factory = CourseFactory.create();
         Course c1 = factory.createCourse(2019, Course.Reference._1, "Software Reuse", 50.0f);
         Course c2 = factory.createCourse(2019, Course.Reference._1, "Design and Analysis of Algorithms", 49.5f);
         Course c3 = factory.createCourse(2020, Course.Reference._2, "Database", 51.2f);
@@ -61,13 +63,13 @@ public class JsonTest {
 
     /**
      * Rendering then parsing should produce an equivalent Question object.
-     * TODO: Should fail because CoarseGrainedCourseFactory is hardcoded at CourseFactory.create()
      */
     @Test
     void testQuestionSerialization_FineGrained() {
+        Configuration.setFineGrained();
         Student s1 = new Student("id1", 50.0f);
         Student s2 = new Student("id2", 49.0f);
-        CourseFactory factory = new FineGrainedCourseFactory();
+        CourseFactory factory = new FineGrainedCourseFactory(); //TODO: change to CourseFactory.create();
         Course c1 = factory.createCourse(2019, Course.Reference._1, "Software Reuse", Arrays.asList(s1, s2));
         Course c2 = factory.createCourse(2019, Course.Reference._1, "Design and Analysis of Algorithms", Arrays.asList(s1, s2));
         Course c3 = factory.createCourse(2020, Course.Reference._2, "Database", Arrays.asList(s1));
@@ -96,7 +98,8 @@ public class JsonTest {
      */
     @Test
     void testCourseSerialization_CoarseGrained() {
-        CourseFactory factory = new CoarseGrainedCourseFactory();
+        Configuration.setCoarseGrained();
+        CourseFactory factory = CourseFactory.create();
         Course course = factory.createCourse(2019, Course.Reference._1, "Software Reuse", 50.0f);
 
         Json formatter = new Json();
@@ -114,9 +117,10 @@ public class JsonTest {
      */
     @Test
     void testCourseSerialization_FineGrained() {
+        Configuration.setFineGrained();
         Student s1 = new Student("id1", 50.0f);
         Student s2 = new Student("id2", 49.0f);
-        CourseFactory factory = new FineGrainedCourseFactory();
+        CourseFactory factory = new FineGrainedCourseFactory(); //TODO: change to CourseFactory.create();
         Course course = factory.createCourse(2019, Course.Reference._1, "Software Reuse", Arrays.asList(s1, s2));
 
         Json formatter = new Json();

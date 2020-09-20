@@ -1,12 +1,13 @@
 package br.ufmg.engsoft.reprova;
 
-import org.omg.CORBA.Object;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.Properties;
 
+/**
+ * TODO: SONIA CUIDE DISSO!
+ */
 public class Configuration {
     public enum Granularity { COARSE_GRAINED, FINE_GRAINED }
     private static Granularity granularity = null;
@@ -23,6 +24,14 @@ public class Configuration {
                 granularity = Granularity.COARSE_GRAINED;
             }
         }
+    }
+    public static void setCoarseGrained() {
+        isLoaded = true;
+        granularity = Granularity.COARSE_GRAINED;
+    }
+    public static void setFineGrained() {
+        isLoaded = true;
+        granularity = Granularity.FINE_GRAINED;
     }
     public static boolean isFineGrained() {
         if (Objects.isNull(granularity)) {
