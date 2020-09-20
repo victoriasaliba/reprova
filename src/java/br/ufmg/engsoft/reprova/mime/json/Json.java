@@ -13,7 +13,7 @@ public class Json {
   /**
    * Deserializer for Semester.
    */
-  protected static class CourserDeserializer implements JsonDeserializer<Course> {
+  public static class CourserDeserializer implements JsonDeserializer<Course> {
     /**
      * The semester format is:
      * "year/ref"
@@ -27,18 +27,19 @@ public class Json {
     ) {
       GsonBuilder parserBuilder = new GsonBuilder();
 
-      return deserializeTo(json, parserBuilder); // TODO: apply variance
+      return deserializeTo(json, parserBuilder,CoarseGrainedCourse.class);
     }
 
-    private Course deserializeTo(JsonElement json, GsonBuilder parserBuilder) {
-      return parserBuilder.create().fromJson(json.getAsJsonObject(), CoarseGrainedCourse.class);
+    private <T extends Course> Course deserializeTo(JsonElement json, GsonBuilder parserBuilder, Class<T> clazz) {
+      System.out.println("Deserialized to type " + clazz.getName());
+      return parserBuilder.create().fromJson(json.getAsJsonObject(), clazz);
     }
   }
 
   /**
    * Deserializer for Student.
    */
-  protected static class StudentDeserializer implements JsonDeserializer<Student> {
+  public static class StudentDeserializer implements JsonDeserializer<Student> {
     @Override
     public Student deserialize(
             JsonElement json,
@@ -54,7 +55,7 @@ public class Json {
   /**
    * Deserializer for Question.Builder.
    */
-  protected static class QuestionBuilderDeserializer
+  public static class QuestionBuilderDeserializer
     implements JsonDeserializer<Question.Builder>
   {
     @Override
