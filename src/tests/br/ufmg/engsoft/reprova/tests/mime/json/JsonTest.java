@@ -61,6 +61,7 @@ public class JsonTest {
 
     /**
      * Rendering then parsing should produce an equivalent Question object.
+     * TODO: Should fail because CoarseGrainedCourseFactory is hardcoded at CourseFactory.create()
      */
     @Test
     void testQuestionSerialization_FineGrained() {
