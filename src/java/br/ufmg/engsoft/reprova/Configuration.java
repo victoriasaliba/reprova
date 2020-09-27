@@ -91,4 +91,10 @@ public class Configuration {
         }
         return scoreFileType.equals(ScoreFileType.CSV);
     }
+    public static boolean isJson(){
+        if (Objects.isNull(granularity)) {
+            readConfiguration();
+        }
+        return scoreFileType.equals(ScoreFileType.JSON);
+    }
 }
