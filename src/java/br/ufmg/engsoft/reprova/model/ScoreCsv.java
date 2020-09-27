@@ -12,9 +12,15 @@ public class ScoreCsv extends ScoreFile{
     public Course getScoredCourseFromFile(BufferedReader reader) throws IOException {
         Course course = null;
         List<Student> students = new ArrayList<Student>();
+        boolean isHeader = true;
         try {
             while (reader.ready()) {
                 String scoreLine = reader.readLine();
+                //ignore csv header
+                if(isHeader){
+                    isHeader = false;
+                    continue;
+                }
                 if (Objects.isNull(course)) {
                     course = courseFromLine(scoreLine);
                 }
