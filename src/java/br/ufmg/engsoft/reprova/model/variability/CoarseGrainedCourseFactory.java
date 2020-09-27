@@ -8,6 +8,12 @@ import br.ufmg.engsoft.reprova.model.Student;
 import java.util.List;
 
 public class CoarseGrainedCourseFactory extends CourseFactory{
+
+    @Override
+    public Course createCourse(int year, Course.Reference ref, String courseName) {
+        return new CoarseGrainedCourse(year,ref,courseName,0.0f);
+    }
+
     @Override
     public Course createCourse(int year, Course.Reference ref, String courseName, float score) {
         return new CoarseGrainedCourse(year,ref,courseName,score);
