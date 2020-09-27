@@ -84,6 +84,7 @@ public class Score {
             InputStream inputStream = part.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             Course scoredCourse = scoreFile.getScoredCourseFromFile(reader);
+            reader.close();
             courseDAO.add(scoredCourse);
 
         }
