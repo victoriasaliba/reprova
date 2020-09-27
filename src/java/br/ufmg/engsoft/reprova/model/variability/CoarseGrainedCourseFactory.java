@@ -21,6 +21,12 @@ public class CoarseGrainedCourseFactory extends CourseFactory{
 
     @Override
     public Course createCourse(int year, Course.Reference ref, String courseName, List<Student> students) {
-        throw new IllegalArgumentException("The system is configured to store course score aggregately!");
+        Float scoreSum = 0.0f;
+        for(Student student: students){
+            scoreSum += student.score;
+        }
+        Float averageScore = scoreSum/students.size();
+        return new CoarseGrainedCourse(year,ref,courseName,averageScore);
     }
+
 }
