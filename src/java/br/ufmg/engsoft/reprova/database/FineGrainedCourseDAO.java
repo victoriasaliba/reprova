@@ -26,7 +26,7 @@ public class FineGrainedCourseDAO extends CourseDAO {
     }
 
     @Override
-    public void delete(Course course) {
+    public boolean delete(Course course) {
 
     }
 }
