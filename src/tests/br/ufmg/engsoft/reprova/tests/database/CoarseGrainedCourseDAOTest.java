@@ -57,8 +57,11 @@ public class CoarseGrainedCourseDAOTest {
         CoarseGrainedCourse course = (CoarseGrainedCourse)factory.createCourse(2019, Course.Reference._1, "test_retrieval", 50.0f);
         dao.add(course);
         Course course2 = dao.get(course);
-        //Assertions.assertEquals(course.courseName, course2.courseName);
-        Assertions.assertEquals(course.getScore(),50.0f);
+        Assertions.assertEquals(course.getScore(),course2.getScore());
+        Assertions.assertEquals(course.year,course2.year);
+        Assertions.assertEquals(course.ref.value,course2.ref.value);
+        Assertions.assertEquals(course.courseName,course2.courseName);
+        
 	}
 	
 	

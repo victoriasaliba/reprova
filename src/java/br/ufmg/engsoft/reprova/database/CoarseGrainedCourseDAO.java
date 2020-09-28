@@ -2,6 +2,8 @@ package br.ufmg.engsoft.reprova.database;
 
 import org.bson.Document;
 
+import com.mongodb.client.model.UpdateOptions;
+
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
@@ -35,7 +37,12 @@ public class CoarseGrainedCourseDAO extends CourseDAO {
     			.append("ref", course.ref.value)
     			.append("courseName", course.courseName)
     			.append("scores", ((CoarseGrainedCourse) course).score);
-    	this.collection.insertOne(doc);
+    	
+    	this.collection.replaceOne(and(
+								eq("year", course.year),
+								eq("ref", course.ref.value),
+								eq("courseName", course.courseName)
+				), doc, (new UpdateOptions()).upsert(true));
     	logger.info("Stored course " + doc.get("courseName") +  ": " + doc.get("year") + "/" + doc.get("ref"));
     }
 
