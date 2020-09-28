@@ -33,7 +33,7 @@ public aspect GranularityVariability {
         return new FineGrainedCourseDAOFactory();
     }
     pointcut setCourseDAOFactoryAsCoarseGrained() : call(CourseDAOFactory CourseDAOFactory.create(..)) && if (!Configuration.isFineGrained());
-    CourseFactory around(): setCourseDAOFactoryAsCoarseGrained() {
+    CourseDAOFactory around(): setCourseDAOFactoryAsCoarseGrained() {
         System.out.println("Configured coarse granularity!");
         return new CoarseGrainedCourseDAOFactory();
     }

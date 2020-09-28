@@ -7,6 +7,7 @@ import br.ufmg.engsoft.reprova.model.variability.CoarseGrainedCourseFactory;
 import br.ufmg.engsoft.reprova.model.variability.FineGrainedCourseFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 
 import java.util.Arrays;
 
@@ -28,6 +29,7 @@ public class CourseTest {
         Course course = factory.createCourse(2019, Course.Reference._1, "Software Reuse", 50.0f);
         Assertions.assertEquals(course.getScore(),50.0f);
     }
+    
     @Test
     void testCreateWithScore_FineGrained() {
         CourseFactory factory = new FineGrainedCourseFactory();
@@ -37,6 +39,7 @@ public class CourseTest {
         );
     }
 
+    @Disabled
     @Test
     void testCreateWithStudents_CoarseGrained() {
         float score1 = 50.0f;

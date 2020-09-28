@@ -52,7 +52,7 @@ public class CoarseGrainedCourseDAO extends CourseDAO {
         return new CoarseGrainedCourse(doc.getInteger("year"),
         							   Course.Reference.fromInt(doc.getInteger("ref")),
         							   doc.getString("courseName"),
-        							   doc.getInteger("scores"));
+        							   doc.getDouble("scores").floatValue());
     }
 
     @Override
