@@ -3,6 +3,7 @@ package br.ufmg.engsoft.reprova.database;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
@@ -37,7 +38,11 @@ public class FineGrainedCourseDAO extends CourseDAO {
     			.append("ref", course.ref.value)
     			.append("courseName", course.courseName)
     			.append("scores", students);
-    	this.collection.insertOne(doc);
+    	this.collection.replaceOne(and(
+										eq("year", course.year),
+										eq("ref", course.ref.value),
+										eq("courseName", course.courseName)
+    								), doc, (new UpdateOptions()).upsert(true));
     	logger.info("Stored course " + doc.get("courseName") +  ": " + doc.get("year") + "/" + doc.get("ref"));
     }
 
@@ -47,10 +52,10 @@ public class FineGrainedCourseDAO extends CourseDAO {
     		throw new IllegalArgumentException("course mustn't be null");
     	}
     	Document doc = this.collection.find(and(
-    												eq("year", course.year),
-    												eq("ref", course.ref.value),
-    												eq("courseName", course.courseName)
-    												)).first();
+    											eq("year", course.year),
+    											eq("ref", course.ref.value),
+    											eq("courseName", course.courseName)
+    											)).first();
     	List<Student> students = (List<Student>) doc.get("scores");
         return new FineGrainedCourse(doc.getInteger("year"),
         							   Course.Reference.fromInt(doc.getInteger("ref")),

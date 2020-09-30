@@ -39,10 +39,10 @@ public class CoarseGrainedCourseDAO extends CourseDAO {
     			.append("scores", ((CoarseGrainedCourse) course).score);
     	
     	this.collection.replaceOne(and(
-								eq("year", course.year),
-								eq("ref", course.ref.value),
-								eq("courseName", course.courseName)
-				), doc, (new UpdateOptions()).upsert(true));
+										eq("year", course.year),
+										eq("ref", course.ref.value),
+										eq("courseName", course.courseName)
+									), doc, (new UpdateOptions()).upsert(true));
     	logger.info("Stored course " + doc.get("courseName") +  ": " + doc.get("year") + "/" + doc.get("ref"));
     }
 
