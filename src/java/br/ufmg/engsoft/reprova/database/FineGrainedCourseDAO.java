@@ -1,18 +1,16 @@
 package br.ufmg.engsoft.reprova.database;
 
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.eq;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bson.Document;
-
 import br.ufmg.engsoft.reprova.mime.json.Json;
+import br.ufmg.engsoft.reprova.model.Course;
 import br.ufmg.engsoft.reprova.model.FineGrainedCourse;
 import br.ufmg.engsoft.reprova.model.Student;
-import br.ufmg.engsoft.reprova.model.CoarseGrainedCourse;
-import br.ufmg.engsoft.reprova.model.Course;
+import com.mongodb.client.model.UpdateOptions;
+import org.bson.Document;
+
+import java.util.List;
+
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
 
 public class FineGrainedCourseDAO extends CourseDAO {
     /**
