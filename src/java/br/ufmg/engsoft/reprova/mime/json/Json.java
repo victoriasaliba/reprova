@@ -2,11 +2,8 @@ package br.ufmg.engsoft.reprova.mime.json;
 
 import java.lang.reflect.Type;
 
-import br.ufmg.engsoft.reprova.model.Course;
-import br.ufmg.engsoft.reprova.model.Student;
+import br.ufmg.engsoft.reprova.model.*;
 import com.google.gson.*;
-
-import br.ufmg.engsoft.reprova.model.Question;
 
 
 /**
@@ -16,7 +13,7 @@ public class Json {
   /**
    * Deserializer for Semester.
    */
-  protected static class CourserDeserializer implements JsonDeserializer<Course> {
+  public static class CourserDeserializer implements JsonDeserializer<Course> {
     /**
      * The semester format is:
      * "year/ref"
@@ -30,14 +27,19 @@ public class Json {
     ) {
       GsonBuilder parserBuilder = new GsonBuilder();
 
-      return parserBuilder.create().fromJson(json.getAsJsonObject(), Course.class);
+      return deserializeTo(json, parserBuilder,CoarseGrainedCourse.class);
+    }
+
+    private <T extends Course> Course deserializeTo(JsonElement json, GsonBuilder parserBuilder, Class<T> clazz) {
+      System.out.println("Deserialized to type " + clazz.getName());
+      return parserBuilder.create().fromJson(json.getAsJsonObject(), clazz);
     }
   }
 
   /**
    * Deserializer for Student.
    */
-  protected static class StudentDeserializer implements JsonDeserializer<Student> {
+  public static class StudentDeserializer implements JsonDeserializer<Student> {
     @Override
     public Student deserialize(
             JsonElement json,
@@ -53,7 +55,7 @@ public class Json {
   /**
    * Deserializer for Question.Builder.
    */
-  protected static class QuestionBuilderDeserializer
+  public static class QuestionBuilderDeserializer
     implements JsonDeserializer<Question.Builder>
   {
     @Override
