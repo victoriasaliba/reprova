@@ -11,7 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScoreJson extends ScoreFile {
-    private String format = ".json";
+    public ScoreJson() {
+        super(".json");
+    }
+
     @Override
     public Course getScoredCourseFromFile(BufferedReader reader) throws IOException {
         JsonParser jsonParser = new JsonParser();

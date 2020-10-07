@@ -1,3 +1,5 @@
+package br.ufmg.engsoft.reprova.model;
+
 import br.ufmg.engsoft.reprova.model.variability.CsvScoreFactory;
 import br.ufmg.engsoft.reprova.model.variability.JsonScoreFactory;
 import br.ufmg.engsoft.reprova.Configuration;

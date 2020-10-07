@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class ScoreCsv extends ScoreFile{
-    private String format = ".csv";
+    public ScoreCsv() {
+        super(".csv");
+    }
     @Override
     public Course getScoredCourseFromFile(BufferedReader reader) throws IOException {
         Course course = null;

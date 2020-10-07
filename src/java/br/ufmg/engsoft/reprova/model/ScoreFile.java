@@ -5,6 +5,11 @@ import java.io.IOException;
 
 public abstract class ScoreFile {
     private String format;
+
+    public ScoreFile(String format) {
+        this.format = format;
+    }
+
     public abstract Course getScoredCourseFromFile(BufferedReader reader) throws IOException;
     public  boolean validateFile(String submittedFileName){
         if (submittedFileName.endsWith(this.format)){
