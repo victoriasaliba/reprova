@@ -3,6 +3,8 @@ package br.ufmg.engsoft.reprova.model;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.bson.Document;
+import br.ufmg.engsoft.reprova.database.FineGrainedCourseDAO;
 import java.util.HashMap;
 
 
@@ -108,4 +110,13 @@ public abstract class Course {
       this.year,
       this.ref.value);
   }
+
+public Document createDocument() {
+	List<Student> students = ((FineGrainedCourse) this).students;
+	Document doc = new Document().append("year", this.year).append("ref", this.ref.value)
+			.append("courseName", this.courseName).append("scores", students);
+	FineGrainedCourseDAO.getLogger()
+			.info("Stored course " + doc.get("courseName") + ": " + doc.get("year") + "/" + doc.get("ref"));
+	return doc;
+}
 }

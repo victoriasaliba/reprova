@@ -14,7 +14,7 @@ public abstract class CourseDAO {
     /**
      * Logger instance.
      */
-    protected static final Logger logger = LoggerFactory.getLogger(QuestionsDAO.class);
+    private static final Logger logger = LoggerFactory.getLogger(QuestionsDAO.class);
 
     /**
      * Json formatter.
@@ -51,4 +51,7 @@ public abstract class CourseDAO {
     public abstract void add(Course course);
     public abstract Course get(Course course);
     public abstract boolean delete(Course course);
+	public static Logger getLogger() {
+		return logger;
+	}
 }

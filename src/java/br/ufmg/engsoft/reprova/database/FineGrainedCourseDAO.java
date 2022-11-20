@@ -24,27 +24,21 @@ public class FineGrainedCourseDAO extends CourseDAO {
         super(db, json);
     }
     
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void add(Course course) {
     	if (course == null) {
     		throw new IllegalArgumentException("course mustn't be null");
     	}
-    	List<Student> students = ((FineGrainedCourse) course).students;
-    	
-    	Document doc = new Document()
-    			.append("year", course.year)
-    			.append("ref", course.ref.value)
-    			.append("courseName", course.courseName)
-    			.append("scores", students);
-    	this.collection.replaceOne(and(
+    	Document doc = course.createDocument();
+		this.collection.replaceOne(and(
 										eq("year", course.year),
 										eq("ref", course.ref.value),
 										eq("courseName", course.courseName)
     								), doc, (new UpdateOptions()).upsert(true));
-    	logger.info("Stored course " + doc.get("courseName") +  ": " + doc.get("year") + "/" + doc.get("ref"));
     }
 
-    @Override
+	@Override
     public Course get(Course course) {
     	if (course == null) {
     		throw new IllegalArgumentException("course mustn't be null");
@@ -72,9 +66,9 @@ public class FineGrainedCourseDAO extends CourseDAO {
 														eq("courseName", course.courseName)
 													)).wasAcknowledged();
     	if (result)
-    		logger.info("Deleted course " + course.courseName +  ": " + course.year + "/" + course.ref.value);
+    		getLogger().info("Deleted course " + course.courseName +  ": " + course.year + "/" + course.ref.value);
     	else
-    		logger.warn("Failed to delete course " + course.courseName +  ": " + course.year + "/" + course.ref.value);
+    		getLogger().warn("Failed to delete course " + course.courseName +  ": " + course.year + "/" + course.ref.value);
     	return result;
     }
 }

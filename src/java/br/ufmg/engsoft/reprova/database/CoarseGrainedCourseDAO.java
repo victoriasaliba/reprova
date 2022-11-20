@@ -43,7 +43,7 @@ public class CoarseGrainedCourseDAO extends CourseDAO {
 										eq("ref", course.ref.value),
 										eq("courseName", course.courseName)
 									), doc, (new UpdateOptions()).upsert(true));
-    	logger.info("Stored course " + doc.get("courseName") +  ": " + doc.get("year") + "/" + doc.get("ref"));
+    	getLogger().info("Stored course " + doc.get("courseName") +  ": " + doc.get("year") + "/" + doc.get("ref"));
     }
 
     @Override
@@ -73,9 +73,9 @@ public class CoarseGrainedCourseDAO extends CourseDAO {
 														eq("courseName", course.courseName)
 													)).wasAcknowledged();
     	if (result)
-    		logger.info("Deleted course " + course.courseName +  ": " + course.year + "/" + course.ref.value);
+    		getLogger().info("Deleted course " + course.courseName +  ": " + course.year + "/" + course.ref.value);
     	else
-    		logger.warn("Failed to delete course " + course.courseName +  ": " + course.year + "/" + course.ref.value);
+    		getLogger().warn("Failed to delete course " + course.courseName +  ": " + course.year + "/" + course.ref.value);
     	return result;
     }
 }

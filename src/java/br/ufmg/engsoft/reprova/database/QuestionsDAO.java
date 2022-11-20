@@ -30,7 +30,7 @@ public class QuestionsDAO {
   /**
    * Logger instance.
    */
-  protected static final Logger logger = LoggerFactory.getLogger(QuestionsDAO.class);
+  private static final Logger logger = LoggerFactory.getLogger(QuestionsDAO.class);
 
   /**
    * Json formatter.
@@ -76,19 +76,19 @@ public class QuestionsDAO {
 
     String doc = document.toJson();
 
-    logger.info("Fetched question: " + doc);
+    getLogger().info("Fetched question: " + doc);
 
     try {
       Question question = json
         .parse(doc, Question.Builder.class)
         .build();
 
-      logger.info("Parsed question: " + question);
+      getLogger().info("Parsed question: " + question);
 
       return question;
     }
     catch (Exception e) {
-      logger.error("Invalid document in database!", e);
+      getLogger().error("Invalid document in database!", e);
       throw new IllegalArgumentException(e);
     }
   }
@@ -110,7 +110,7 @@ public class QuestionsDAO {
       .first();
 
     if (question == null)
-      logger.info("No such question " + id);
+      getLogger().info("No such question " + id);
 
     return question;
   }
@@ -160,16 +160,8 @@ public class QuestionsDAO {
     if (question == null)
       throw new IllegalArgumentException("question mustn't be null");
 
-    List<Course> courses = question.courses;
-
-    Document doc = new Document()
-      .append("theme", question.theme)
-      .append("description", question.description)
-      .append("statement", question.statement)
-      .append("courses", courses)
-      .append("pvt", question.isPrivate);
-
-    String id = question.id;
+    Document doc = question.createDocument();
+	String id = question.id;
     if (id != null) {
       UpdateResult result = this.collection.replaceOne(
         eq(new ObjectId(id)),
@@ -177,18 +169,15 @@ public class QuestionsDAO {
       );
 
       if (!result.wasAcknowledged()) {
-        logger.warn("Failed to replace question " + id);
+        getLogger().warn("Failed to replace question " + id);
         return false;
       }
     }
     else
       this.collection.insertOne(doc);
 
-    logger.info("Stored question " + doc.get("_id"));
-
     return true;
   }
-
 
   /**
    * Remove the question with the given id from the collection.
@@ -205,10 +194,16 @@ public class QuestionsDAO {
     ).wasAcknowledged();
 
     if (result)
-      logger.info("Deleted question " + id);
+      getLogger().info("Deleted question " + id);
     else
-      logger.warn("Failed to delete question " + id);
+      getLogger().warn("Failed to delete question " + id);
 
     return result;
   }
+
+
+
+public static Logger getLogger() {
+	return logger;
+}
 }

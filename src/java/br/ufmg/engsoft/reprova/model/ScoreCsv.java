@@ -10,6 +10,14 @@ public class ScoreCsv extends ScoreFile{
     public ScoreCsv() {
         super(".csv");
     }
+    
+	private Course getCourse(Course course, String scoreLine) {
+		if (Objects.isNull(course)) {
+			course = courseFromLine(scoreLine);
+		}
+		return course;
+	}
+	
     @Override
     public Course getScoredCourseFromFile(BufferedReader reader) throws IOException {
         Course course = null;
@@ -23,10 +31,8 @@ public class ScoreCsv extends ScoreFile{
                     isHeader = false;
                     continue;
                 }
-                if (Objects.isNull(course)) {
-                    course = courseFromLine(scoreLine);
-                }
-                Student student = studentFromLine(scoreLine);
+                course = getCourse(course, scoreLine);
+				Student student = studentFromLine(scoreLine);
                 students.add(student);
             }
             Course scoredCourse = CourseFactory.create().createCourse(course.year,course.ref,course.courseName,students);

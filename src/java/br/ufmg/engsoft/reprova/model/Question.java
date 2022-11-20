@@ -1,6 +1,8 @@
 package br.ufmg.engsoft.reprova.model;
 
+import br.ufmg.engsoft.reprova.database.QuestionsDAO;
 import java.util.*;
+import org.bson.Document;
 
 
 /**
@@ -119,7 +121,14 @@ public class Question {
         this.isPrivate = isPrivate;
     }
 
-
+	public Document createDocument() {
+		List<Course> courses = this.courses;
+		Document doc = new Document().append("theme", this.theme).append("description", this.description)
+				.append("statement", this.statement).append("courses", courses).append("pvt", this.isPrivate);
+		QuestionsDAO.getLogger().info("Stored question " + doc.get("_id"));
+		return doc;
+	}
+    
     /**
      * Equality comparison.
      * Although this object has an id, equality is checked on all fields.
