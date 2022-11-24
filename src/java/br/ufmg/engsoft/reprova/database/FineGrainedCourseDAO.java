@@ -52,7 +52,7 @@ public class FineGrainedCourseDAO extends CourseDAO {
         return new FineGrainedCourse(doc.getInteger("year"),
         							   Course.Reference.fromInt(doc.getInteger("ref")),
         							   doc.getString("courseName"),
-        							   students);
+        							   students, null);
     }
 
     @Override
