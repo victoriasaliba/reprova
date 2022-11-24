@@ -12,10 +12,11 @@ public class ScoreCsv extends ScoreFile{
     }
     
 	private Course getCourse(Course course, String scoreLine) {
+		Course courseFromLine = null;
 		if (Objects.isNull(course)) {
-			course = courseFromLine(scoreLine);
+			courseFromLine = courseFromLine(scoreLine);
 		}
-		return course;
+		return courseFromLine;
 	}
 	
     @Override
@@ -31,7 +32,7 @@ public class ScoreCsv extends ScoreFile{
                     isHeader = false;
                     continue;
                 }
-                course = course.getCourse(scoreLine);
+                course = getCourse(course, scoreLine);
 				Student student = studentFromLine(scoreLine);
                 students.add(student);
             }
