@@ -27,8 +27,10 @@ import br.ufmg.engsoft.reprova.model.Question;
  * DAO for Question class on mongodb.
  */
 public class QuestionsDAO {
-  /**
-   * Logger instance.
+  private QuestionsDAOExtracted questionsDAOExtracted;
+
+/**
+  * Logger instance.
    */
   private static final Logger logger = LoggerFactory.getLogger(QuestionsDAO.class);
 
@@ -36,13 +38,6 @@ public class QuestionsDAO {
    * Json formatter.
    */
   protected final Json json;
-
-  /**
-   * Questions collection.
-   */
-  protected final MongoCollection<Document> collection;
-
-
 
   /**
    * Basic constructor.
@@ -56,8 +51,8 @@ public class QuestionsDAO {
 
     if (json == null)
       throw new IllegalArgumentException("json mustn't be null");
+	this.questionsDAOExtracted = new QuestionsDAOExtracted(db.getCollection("questions"));
 
-    this.collection = db.getCollection("questions");
 
     this.json = json;
   }
@@ -101,19 +96,8 @@ public class QuestionsDAO {
    * @throws IllegalArgumentException  if any parameter is null
    */
   public Question get(String id) {
-    if (id == null)
-      throw new IllegalArgumentException("id mustn't be null");
-
-    Question question = this.collection
-      .find(eq(new ObjectId(id)))
-      .map(this::parseDoc)
-      .first();
-
-    if (question == null)
-      getLogger().info("No such question " + id);
-
-    return question;
-  }
+    return questionsDAOExtracted.get(id);
+   }
 
 
   /**
@@ -126,26 +110,7 @@ public class QuestionsDAO {
    * @throws IllegalArgumentException  if there is an invalid Question
    */
   public Collection<Question> list(String theme, Boolean pvt) {
-    List<Bson> filters =
-      Arrays.asList(
-        theme == null ? null : eq("theme", theme),
-        pvt == null ? null : eq("pvt", pvt)
-      )
-      .stream()
-      .filter(Objects::nonNull) // mongo won't allow null filters.
-      .collect(Collectors.toList());
-
-    FindIterable<Document> doc = filters.isEmpty() // mongo won't take null as a filter.
-      ? this.collection.find()
-      : this.collection.find(and(filters));
-
-    ArrayList<Question> result = new ArrayList<Question>();
-
-    doc.projection(fields(exclude("statement")))
-      .map(this::parseDoc)
-      .into(result);
-
-    return result;
+    return questionsDAOExtracted.list(theme, pvt);
   }
 
 
@@ -157,27 +122,9 @@ public class QuestionsDAO {
    * @throws IllegalArgumentException  if any parameter is null
    */
   public boolean add(Question question) {
-    if (question == null)
-      throw new IllegalArgumentException("question mustn't be null");
-
-    Document doc = question.createDocument();
-	String id = (String) doc.get("id");
-    if (id != null) {
-      UpdateResult result = this.collection.replaceOne(
-        eq(new ObjectId(id)),
-        doc
-      );
-
-      if (!result.wasAcknowledged()) {
-        getLogger().warn("Failed to replace question " + id);
-        return false;
-      }
-    }
-    else
-      this.collection.insertOne(doc);
-
-    return true;
+    return questionsDAOExtracted.add(question);
   }
+
 
   /**
    * Remove the question with the given id from the collection.
@@ -186,24 +133,11 @@ public class QuestionsDAO {
    * @throws IllegalArgumentException  if any parameter is null
    */
   public boolean remove(String id) {
-    if (id == null)
-      throw new IllegalArgumentException("id mustn't be null");
+    return questionsDAOExtracted.remove(id);
+   }
 
-    boolean result = this.collection.deleteOne(
-      eq(new ObjectId(id))
-    ).wasAcknowledged();
 
-    if (result)
-      getLogger().info("Deleted question " + id);
-    else
-      getLogger().warn("Failed to delete question " + id);
-
-    return result;
+  public static Logger getLogger() {
+  	return logger;
   }
-
-
-
-public static Logger getLogger() {
-	return logger;
-}
 }
