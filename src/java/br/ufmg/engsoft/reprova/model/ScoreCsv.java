@@ -31,7 +31,7 @@ public class ScoreCsv extends ScoreFile{
                     isHeader = false;
                     continue;
                 }
-                course = getCourse(course, scoreLine);
+                course = course.getCourse(scoreLine);
 				Student student = studentFromLine(scoreLine);
                 students.add(student);
             }

@@ -161,7 +161,7 @@ public class QuestionsDAO {
       throw new IllegalArgumentException("question mustn't be null");
 
     Document doc = question.createDocument();
-	String id = question.id;
+	String id = (String) doc.get("id");
     if (id != null) {
       UpdateResult result = this.collection.replaceOne(
         eq(new ObjectId(id)),

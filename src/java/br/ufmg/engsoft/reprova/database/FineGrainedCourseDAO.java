@@ -32,9 +32,9 @@ public class FineGrainedCourseDAO extends CourseDAO {
     	}
     	Document doc = course.createDocument();
 		this.collection.replaceOne(and(
-										eq("year", course.year),
-										eq("ref", course.ref.value),
-										eq("courseName", course.courseName)
+										eq("year", doc.get("year")),
+										eq("ref", doc.get("ref")),
+										eq("courseName", doc.get("courseName"))
     								), doc, (new UpdateOptions()).upsert(true));
     }
 

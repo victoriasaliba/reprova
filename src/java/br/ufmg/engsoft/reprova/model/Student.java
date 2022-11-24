@@ -1,5 +1,6 @@
 package br.ufmg.engsoft.reprova.model;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Student {
@@ -24,5 +25,13 @@ public class Student {
     @Override
     public int hashCode() {
         return Objects.hash(id, score);
+    }
+    
+    public float calculateScore(List<Student> students) {
+		float totalScore = 0;
+		for (Student student : students) {
+			totalScore += student.score;
+		}
+		return totalScore;
     }
 }
