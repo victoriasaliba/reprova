@@ -9,7 +9,7 @@ public class FineGrainedCourse extends Course {
     public FineGrainedCourse(int year, Reference ref, String courseName, List<Student> students, Student student) {
         super(year, ref, courseName);
         this.students = students;
-        this.student = student;
+        this.student = new Student("", 0);
     }
 
     @Override
