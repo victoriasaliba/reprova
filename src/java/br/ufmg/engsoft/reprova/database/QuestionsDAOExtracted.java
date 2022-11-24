@@ -28,10 +28,11 @@ import br.ufmg.engsoft.reprova.model.Question;
 import org.slf4j.Logger;	
 import org.slf4j.LoggerFactory;
 
-public class QuestionsDAOExtracted {
+public class QuestionsDAOExtracted extends QuestionsDAO {
 	private final MongoCollection<Document> collection;
 
 	public QuestionsDAOExtracted(MongoCollection<Document> getCollection) {
+		super(null, null);
 		this.collection = getCollection;
 	}
 
